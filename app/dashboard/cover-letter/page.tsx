@@ -1,9 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import CoverLetterForm from "@/components/cover-letter/CoverLetterForm";
-import CoverLetterPreview from "@/components/cover-letter/CoverLetterPreview";
-import CoverLetterHistory from "@/components/cover-letter/CoverLetterHistory";
+import dynamic from "next/dynamic";
+
+// Dynamic import to avoid SSR issues
+const CoverLetterForm = dynamic(
+  () => import("@/components/cover-letter/CoverLetterForm"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-pulse h-96" />
+    ),
+  },
+);
+
+const CoverLetterPreview = dynamic(
+  () => import("@/components/cover-letter/CoverLetterPreview"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-pulse h-96" />
+    ),
+  },
+);
+
+const CoverLetterHistory = dynamic(
+  () => import("@/components/cover-letter/CoverLetterHistory"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 animate-pulse h-48" />
+    ),
+  },
+);
 
 export default function CoverLetterPage() {
   const [generatedContent, setGeneratedContent] = useState("");
