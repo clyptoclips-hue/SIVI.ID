@@ -1,73 +1,137 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
+import { useCVStore } from "@/lib/stores/cv-store";
+import PersonalInfoForm from "@/components/cv/steps/PersonalInfoForm";
+import ExperienceForm from "@/components/cv/steps/ExperienceForm";
+import EducationForm from "@/components/cv/steps/EducationForm";
+import SkillsForm from "@/components/cv/steps/SkillsForm";
+import SummaryForm from "@/components/cv/steps/SummaryForm";
+import CVPreview from "@/components/cv/CVPreview";
 
-export default function CVPage() {
-  const [user, setUser] = useState<User | null>(null);
-  const supabase = createClient();
+const steps = [
+  { number: 1, name: "Data Diri", component: PersonalInfoForm },
+  { number: 2, name: "Pengalaman", component: ExperienceForm },
+  { number: 3, name: "Pendidikan", component: EducationForm },
+  { number: 4, name: "Keahlian", component: SkillsForm },
+  { number: 5, name: "Ringkasan", component: SummaryForm },
+];
 
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
-    getUser();
-  }, [supabase]);
+export default function CVBuilderPage() {
+  const { currentStep, setCurrentStep, atsScore, isSaving, saveCv } =
+    useCVStore();
 
-  const userName = user?.user_metadata?.full_name || "Pengguna";
+  const CurrentStepComponent = steps[currentStep - 1].component;
+
+  const getATSColor = (score: number) => {
+    if (score >= 71) return "bg-green-500";
+    if (score >= 41) return "bg-yellow-500";
+    return "bg-red-500";
+  };
+
+  const handleNext = () => {
+    if (currentStep < steps.length) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Selamat datang, {userName}! 👋
-        </h1>
-        <p className="text-gray-600">Mulai buat CV profesional Anda sekarang</p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 px-6 py-4 sticky top-0 z-10">
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-gray-900">CV Builder</h1>
+          <div className="flex items-center gap-4">
+            {/* ATS Score Badge */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600">Skor ATS:</span>
+              <div
+                className={`${getATSColor(atsScore)} text-white px-4 py-2 rounded-full font-bold text-sm`}
+              >
+                {atsScore}/100
+              </div>
+            </div>
+            <button
+              onClick={saveCv}
+              disabled={isSaving}
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition disabled:opacity-50"
+            >
+              {isSaving ? "Menyimpan..." : "Simpan"}
+            </button>
+            <button className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg font-semibold transition">
+              Export PDF
+            </button>
+          </div>
+        </div>
+
+        {/* Stepper */}
+        <div className="mt-6 flex items-center justify-center gap-2">
+          {steps.map((step, index) => (
+            <div key={step.number} className="flex items-center">
+              <button
+                onClick={() => setCurrentStep(step.number)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${
+                  currentStep === step.number
+                    ? "bg-blue-600 text-white"
+                    : currentStep > step.number
+                      ? "bg-green-100 text-green-700"
+                      : "bg-gray-100 text-gray-600"
+                }`}
+              >
+                <span className="font-bold">{step.number}</span>
+                <span className="text-sm font-medium">{step.name}</span>
+              </button>
+              {index < steps.length - 1 && (
+                <svg
+                  className="w-4 h-4 mx-2 text-gray-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-        <div className="max-w-md mx-auto">
-          <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg
-              className="w-10 h-10 text-blue-600"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {/* Main Content: 2 Column Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+        {/* Left: Form Editor */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <CurrentStepComponent />
+
+          {/* Navigation Buttons */}
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
+            <button
+              onClick={handlePrevious}
+              disabled={currentStep === 1}
+              className="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
+              Sebelumnya
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentStep === steps.length}
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {currentStep === steps.length ? "Selesai" : "Selanjutnya"}
+            </button>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            Belum ada CV
-          </h2>
-          <p className="text-gray-600 mb-6">
-            Mulai buat CV pertamamu dengan template profesional kami
-          </p>
-          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition inline-flex items-center gap-2">
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Buat CV Baru
-          </button>
+        </div>
+
+        {/* Right: CV Preview */}
+        <div className="sticky top-24 h-fit">
+          <CVPreview />
         </div>
       </div>
     </div>
