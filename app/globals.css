@@ -1,26 +1,46 @@
 @import "tailwindcss";
+@import "../styles/sivi-tokens.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8f9fb;
+  --foreground: #111217;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Inter", var(--font-geist-sans);
+  --font-mono: "DM Mono", var(--font-geist-mono);
+
+  /* DwiRafa Design System Colors */
+  --color-sivi-bg: #f8f9fb;
+  --color-sivi-surface: #ffffff;
+  --color-sivi-surface2: #f0f2f5;
+  --color-sivi-surface3: #e6e9ef;
+  --color-sivi-orange: #e05a1e;
+  --color-sivi-cyan: #0099b8;
+  --color-sivi-green: #00a855;
+  --color-sivi-purple: #7c3aed;
+  --color-sivi-text: #111217;
+  --color-sivi-text2: #4a5568;
+  --color-sivi-text3: #9aa3b2;
+
+  /* Font Families */
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-space: "Space Grotesk", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-dm-mono: "DM Mono", monospace;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #111217;
+    --foreground: #f8f9fb;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
 }

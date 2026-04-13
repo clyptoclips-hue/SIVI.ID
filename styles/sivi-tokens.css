@@ -1,0 +1,311 @@
+/* ============================================
+   SIVI.ID Design System — DwiRafa Studio DNA
+   ============================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Backgrounds */
+  --bg: #f8f9fb;
+  --surface: #ffffff;
+  --surface2: #f0f2f5;
+  --surface3: #e6e9ef;
+
+  /* Brand Colors */
+  --orange: #e05a1e;
+  --orange-dim: rgba(224, 90, 30, 0.1);
+  --cyan: #0099b8;
+  --cyan-dim: rgba(0, 153, 184, 0.1);
+  --green: #00a855;
+  --green-dim: rgba(0, 168, 85, 0.08);
+  --purple: #7c3aed;
+
+  /* Text */
+  --text: #111217;
+  --text2: #4a5568;
+  --text3: #9aa3b2;
+
+  /* Dot Grid BG */
+  --dot: rgba(0, 105, 120, 0.07);
+  --dot2: rgba(224, 90, 30, 0.04);
+}
+
+/* Dot Grid Background */
+.dot-bg {
+  background-image:
+    radial-gradient(circle, var(--dot) 1.2px, transparent 1.2px),
+    radial-gradient(circle, var(--dot2) 1px, transparent 1px);
+  background-size:
+    28px 28px,
+    56px 56px;
+  background-position:
+    0 0,
+    14px 14px;
+}
+
+/* Typography */
+.font-orbitron {
+  font-family: "Orbitron", sans-serif;
+}
+.font-space {
+  font-family: "Space Grotesk", sans-serif;
+}
+.font-inter {
+  font-family: "Inter", sans-serif;
+}
+.font-mono {
+  font-family: "DM Mono", monospace;
+}
+
+/* Glitch Text Effect */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  color: var(--cyan);
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  transform: translate(-3px, 0);
+  opacity: 0.7;
+  animation: glitch1 4s infinite;
+}
+
+.glitch::after {
+  color: var(--orange);
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  transform: translate(3px, 0);
+  opacity: 0.7;
+  animation: glitch2 4s infinite;
+}
+
+@keyframes glitch1 {
+  0%,
+  90%,
+  100% {
+    transform: translate(-3px, 0);
+  }
+  92% {
+    transform: translate(-5px, -2px);
+  }
+  94% {
+    transform: translate(3px, 2px);
+  }
+  96% {
+    transform: translate(-3px, 0);
+  }
+}
+
+@keyframes glitch2 {
+  0%,
+  90%,
+  100% {
+    transform: translate(3px, 0);
+  }
+  92% {
+    transform: translate(5px, 2px);
+  }
+  94% {
+    transform: translate(-3px, -2px);
+  }
+  96% {
+    transform: translate(3px, 0);
+  }
+}
+
+/* Float Animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Glow Pulse */
+@keyframes nodePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 153, 184, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(0, 153, 184, 0);
+  }
+}
+
+@keyframes orangePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(224, 90, 30, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(224, 90, 30, 0);
+  }
+}
+
+/* Section Eyebrow */
+.sec-eyebrow {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sec-eyebrow::before,
+.sec-eyebrow::after {
+  content: "";
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan));
+}
+
+.sec-eyebrow::after {
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+/* Accent Bar */
+.accent-bar {
+  width: 320px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--cyan),
+    var(--purple),
+    transparent
+  );
+  border-radius: 100px;
+  margin: 18px auto;
+  box-shadow: 0 0 12px rgba(0, 153, 184, 0.2);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border-radius: 100px;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid;
+}
+
+.badge-orange {
+  color: var(--orange);
+  border-color: rgba(224, 90, 30, 0.35);
+  background: rgba(224, 90, 30, 0.07);
+}
+
+.badge-cyan {
+  color: var(--cyan);
+  border-color: rgba(0, 153, 184, 0.25);
+  background: rgba(0, 153, 184, 0.06);
+}
+
+.badge-green {
+  color: var(--green);
+  border-color: rgba(0, 168, 85, 0.25);
+  background: rgba(0, 168, 85, 0.05);
+}
+
+/* Card Base */
+.sivi-card {
+  background: var(--surface);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.sivi-card:hover {
+  border-color: rgba(0, 153, 184, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+.sivi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.sivi-card.card-orange::before {
+  background: linear-gradient(90deg, var(--orange), transparent);
+}
+
+.sivi-card.card-cyan::before {
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+.sivi-card.card-green::before {
+  background: linear-gradient(90deg, var(--green), transparent);
+}
+
+/* Buttons */
+.btn-sivi-primary {
+  padding: 14px 28px;
+  background: var(--cyan);
+  color: #fff;
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 153, 184, 0.25);
+}
+
+.btn-sivi-primary:hover {
+  box-shadow: 0 8px 30px rgba(0, 153, 184, 0.3);
+  transform: translateY(-2px);
+  background: #007a94;
+}
+
+.btn-sivi-outline {
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--text);
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-sivi-outline:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
